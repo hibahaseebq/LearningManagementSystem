@@ -50,6 +50,11 @@ Route::middleware(['auth:api'])->group(function () {
     Route::delete('/delete-quiz/{id}', [QuizController::class, 'destroy']);
     Route::post('/assign/quizzes', [QuizAssignmentController::class, 'assign']);
     Route::get('/get/student-assigned/quiz/{userId}', [QuizAssignmentController::class, 'getStudentAssignedQuizzes']);
+
+    // Route to get the assigned quiz questions for a student
+    Route::get('/student-assigned/quiz/questions/{quizId}', [QuizAssignmentController::class, 'getStudentQuizQuestions']);
+
+
     Route::post('/submit/quiz/options/{quizAssignmentId}', [QuizResultController::class, 'attemptQuiz']);
     Route::get('/quiz/assignments/{assignmentId}', [QuizAssignmentController::class, 'show']);
     Route::delete('/quiz/assignment/{id}', [QuizAssignmentController::class, 'destroy']);

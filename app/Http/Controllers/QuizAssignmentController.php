@@ -65,6 +65,32 @@ class QuizAssignmentController extends Controller
         return successResponse('Assigned quizzes retrieved successfully', $response);
     }
 
+    public function getStudentQuizQuestions($quizId)
+    {
+        // Get the quiz assignment based on the quiz ID and load the related questions
+        $quizAssignment = $this->quizAssignmentService->getQuizQuestionsByQuizId($quizId);
+
+        if (!$quizAssignment) {
+            return errorResponse('Quiz assignment not found', 404);
+        }
+
+        // Prepare the response to include quiz questions and options
+        $response = [
+            'quiz_id' => $quizAssignment->quiz->id,
+            'quiz_name' => $quizAssignment->quiz->quiz_name,
+            'questions' => $quizAssignment->quiz->questions->map(function ($question) {
+                return [
+                    'question_id' => $question->id,
+                    'question' => $question->question,
+                    'options' => json_decode($question->options), // Assuming options are stored as JSON
+                ];
+            }),
+        ];
+
+        return successResponse('Quiz questions retrieved successfully', $response);
+    }
+
+
     // List all quiz assignments for a user
     public function index($userId)
     {

@@ -66,6 +66,15 @@ class QuizAssignmentService
         return QuizAssignment::find($assignmentId);
     }
 
+
+    public function getQuizQuestionsByQuizId($quizId)
+    {
+        return QuizAssignment::with('quiz.questions')
+            ->where('quiz_id', $quizId)
+            ->first();  // Fetch the first quiz assignment for this quiz ID
+    }
+
+
     /**
      * Delete a quiz assignment
      *
@@ -73,17 +82,17 @@ class QuizAssignmentService
      * @return bool
      */
     public function deleteAssignment($assignmentId)
-{
-    $assignment = QuizAssignment::find($assignmentId);
-    
-    if ($assignment) {
-        $assignment->delete();
-        return true;
-    }
+    {
+        $assignment = QuizAssignment::find($assignmentId);
 
-    // Log if assignment not found
-    \Log::info('Assignment not found with id: ' . $assignmentId);
-    
-    return false;
-}
+        if ($assignment) {
+            $assignment->delete();
+            return true;
+        }
+
+        // Log if assignment not found
+        \Log::info('Assignment not found with id: ' . $assignmentId);
+
+        return false;
+    }
 }
